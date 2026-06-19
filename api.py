@@ -17,6 +17,9 @@ app.add_middleware(
 class ResearchRequest(BaseModel):
     topic: str
 
+@app.get("/")
+def home():
+    return {"status": "API is running 🚀"}
 
 @app.post("/research")
 def run_research(data: ResearchRequest):
