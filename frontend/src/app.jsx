@@ -234,7 +234,7 @@ export default function App() {
 
         try {
             // Call the FastAPI backend
-            const response = await fetch("http://127.0.0.1:8000/research", {
+            const response = await fetch("https://multi-agent-ai-research-system-3.onrender.com", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ topic }),
@@ -267,7 +267,7 @@ export default function App() {
                 data.scores ??
                 data.score_history ??
                 [finalScore];
-                
+
             setFileName(data.file_name || "");
 
             console.log("FILE NAME =", data.file_name);
