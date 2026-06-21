@@ -234,7 +234,7 @@ export default function App() {
 
         try {
             // Call the FastAPI backend
-            const response = await fetch("https://multi-agent-ai-research-system-5.onrender.com/", {
+            const response = await fetch("https://multi-agent-ai-research-system-5.onrender.com/research", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ topic }),
