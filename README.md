@@ -1,6 +1,6 @@
 # Multi-Agent AI Research System
 
-An AI-powered research assistant built using LangGraph, LangChain, and Mistral AI. The system uses multiple specialized agents to perform web research, analyze information, generate detailed reports, and evaluate report quality through an automated critic-feedback loop.
+An AI-powered research assistant built using Langchain, Langgraph, and Mistral AI. The system uses multiple specialized agents to perform web research, analyze information, generate detailed reports, and evaluate report quality through an automated critic-feedback loop.
 
 ## Features
 
