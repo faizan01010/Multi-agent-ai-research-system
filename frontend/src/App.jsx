@@ -241,7 +241,8 @@ export default function App() {
             });
 
             if (!response.ok) {
-                throw new Error(`Server error: ${response.status} ${response.statusText}`);
+                const errBody = await response.json().catch(() => null);
+                throw new Error(errBody?.detail || `Server error: ${response.status} ${response.statusText}`);
             }
 
             const data = await response.json();
@@ -298,7 +299,7 @@ export default function App() {
 
             const isNetworkError = err.message.includes("fetch") || err.message.includes("Failed") || err.message.includes("NetworkError");
             const errMsg = isNetworkError
-                ? "Cannot connect to FastAPI server at localhost:8000. Make sure `uvicorn api:app --reload` is running."
+                ? "Cannot connect to the research server. It may be waking up (free hosting sleeps after inactivity) — please try again in a few seconds."
                 : err.message;
 
             addLog({ s: 0, msg: `✗ Error: ${errMsg}`, warn: true });
@@ -638,7 +639,8 @@ export default function App() {
                                                     </div>
 
                                                     <a
-                                                        href={`http://127.0.0.1:8000/report/${fileName}`}
+
+                                                        href={`https://multi-agent-ai-research-system-5.onrender.com/report/${fileName}`}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
                                                         style={{

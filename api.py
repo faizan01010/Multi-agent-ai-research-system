@@ -1,8 +1,9 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from fastapi.responses import FileResponse
 from pipeline import graph
+import re
 
 app = FastAPI()
 
@@ -35,7 +36,8 @@ def run_research(data: ResearchRequest):
 
         report = result.get("report", "")
 
-        filename = data.topic.replace(" ", "_") + ".md"
+        safe_topic = re.sub(r'[^a-zA-Z0-9_-]', '_', data.topic)[:50]
+        filename = safe_topic + ".md"
 
         with open(filename, "w", encoding="utf-8") as f:
             f.write(report)
@@ -55,10 +57,11 @@ def run_research(data: ResearchRequest):
         }
 
     except Exception as e:
-        print("ERROR:", str(e))
-        return {
-            "error": str(e)
-        }
+      print("ERROR:", str(e))
+      raise HTTPException(
+         status_code=503,
+         detail="Research is taking longer than usual (API busy). Please try again in a few seconds."
+      )
 
 @app.get("/report/{filename}")
 def get_report(filename: str):
