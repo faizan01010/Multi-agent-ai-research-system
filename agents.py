@@ -14,7 +14,7 @@ load_dotenv()
 # ====================================================
 
 rate_limiter = InMemoryRateLimiter(
-    requests_per_second=0.7,
+    requests_per_second=0.4,  
     check_every_n_seconds=0.2,
     max_bucket_size=1,
 )
@@ -98,7 +98,7 @@ critic_chain = critic_prompt | llm | StrOutputParser()
 # LANGGRAPH NODES
 # ====================================================
 
-@retry(stop=stop_after_attempt(3), wait=wait_exponential_jitter(initial=3, max=15))
+@retry(stop=stop_after_attempt(3), wait=wait_exponential_jitter(initial=5, max=20))
 def search_node(state):
     print("\n" + "=" * 50)
     print("STEP 1 - SEARCH AGENT")
@@ -115,7 +115,7 @@ def search_node(state):
     return {"search_results": search_results}
 
 
-@retry(stop=stop_after_attempt(3), wait=wait_exponential_jitter(initial=3, max=15))
+@retry(stop=stop_after_attempt(3), wait=wait_exponential_jitter(initial=5, max=20))
 def reader_node(state):
     print("\n" + "=" * 50)
     print("STEP 2 - READER AGENT")
@@ -139,7 +139,7 @@ Search Results:
     return {"scraped_content": scraped_content}
 
 
-@retry(stop=stop_after_attempt(3), wait=wait_exponential_jitter(initial=3, max=15))
+@retry(stop=stop_after_attempt(3), wait=wait_exponential_jitter(initial=5, max=20))
 def writer_node(state):
     print("\n" + "=" * 50)
     print("STEP 3 - WRITER")
@@ -161,7 +161,7 @@ SCRAPED CONTENT:
     return {"report": report}
 
 
-@retry(stop=stop_after_attempt(3), wait=wait_exponential_jitter(initial=3, max=15))
+@retry(stop=stop_after_attempt(3), wait=wait_exponential_jitter(initial=5, max=20))
 def critic_node(state):
     print("\n" + "=" * 50)
     print("STEP 4 - CRITIC")
