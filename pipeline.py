@@ -25,12 +25,14 @@ def should_rewrite(state):
     except:
         score = 10
 
-    print(f"\nDetected Score = {score}")
+    rewrite_count = state.get("rewrite_count", 0)
+    print(f"\nDetected Score = {score}, Rewrite attempts so far = {rewrite_count}")
 
-    if score < 8:
-        print("Score below 8 → Rewriting Report...")
+    if score < 8 and rewrite_count < 1:
+        print("Score below 8 → Rewriting Report (attempt 1)...")
         return "rewrite"
 
+    print("Accepting current report (max rewrites reached or score sufficient)")
     return "end"
 
 
@@ -94,4 +96,3 @@ if __name__ == "__main__":
     print("CRITIC FEEDBACK")
     print("=" * 70)
     print(result["feedback"])
-

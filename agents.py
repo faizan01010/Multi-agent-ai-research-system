@@ -14,7 +14,7 @@ load_dotenv()
 # ====================================================
 
 rate_limiter = InMemoryRateLimiter(
-    requests_per_second=0.4,  
+    requests_per_second=0.3,   
     check_every_n_seconds=0.2,
     max_bucket_size=1,
 )
@@ -148,17 +148,20 @@ def writer_node(state):
     research = f"""
 SEARCH RESULTS:
 
-{state['search_results']}
+{state['search_results'][:2500]}
 
 SCRAPED CONTENT:
 
-{state['scraped_content']}
+{state['scraped_content'][:2000]}
 """
 
     report = writer_chain.invoke({"topic": state["topic"], "research": research})
     raise_if_error(report, "writer_node")
 
-    return {"report": report}
+    return {
+        "report": report,
+        "rewrite_count": state.get("rewrite_count", 0) + 1
+    }
 
 
 @retry(stop=stop_after_attempt(3), wait=wait_exponential_jitter(initial=5, max=20))
